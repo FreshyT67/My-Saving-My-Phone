@@ -1,0 +1,1642 @@
+
+
+<!DOCTYPE html>
+
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Savings - การบันทึกเงินออม</title>
+
+
+
+
+
+<style>
+
+  :root {
+
+    --bg: #fff8f6;
+
+    --surface: #ffffff;
+
+    --primary: #9585d5;
+
+    --primary-dark: #7564b7;
+
+    --text: #413c52;
+
+    --muted: #918a9f;
+
+    --mint: #dff3e8;
+
+    --mint-dark: #43866c;
+
+    --pink: #fbe5ed;
+
+    --lavender: #eee8fb;
+
+    --border: #eee8f1;
+
+    --shadow: 0 8px 28px rgba(95, 75, 120, 0.08);
+
+  }
+
+
+
+  * {
+
+    box-sizing: border-box;
+
+  }
+
+
+
+  body {
+
+    margin: 0;
+
+    padding: 32px 20px;
+
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+
+    background:
+
+      radial-gradient(ellipse at top left, #f0eaff 0, transparent 38%),
+
+      radial-gradient(ellipse at top right, #ffedf1 0, transparent 35%),
+
+      var(--bg);
+
+    color: var(--text);
+
+    line-height: 1.6;
+
+  }
+
+
+
+  .container {
+
+    width: 100%;
+
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+  }
+
+
+
+  header {
+
+    margin-bottom: 28px;
+
+    padding: 10px 2px;
+
+  }
+
+
+
+  h1 {
+
+    color: var(--primary-dark);
+
+    font-size: clamp(28px, 4vw, 38px);
+
+    letter-spacing: -0.7px;
+
+    margin: 0 0 6px;
+
+  }
+
+
+
+  h2 {
+
+    font-size: 20px;
+
+    margin: 0 0 20px;
+
+    color: #5a506e;
+
+  }
+
+
+
+  .subtitle {
+
+    margin: 0;
+
+    color: var(--muted);
+
+  }
+
+
+
+  .cards {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+
+  }
+
+
+
+  .card,
+
+  .panel {
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border: 1px solid rgba(238, 232, 241, 0.9);
+
+    border-radius: 22px;
+
+    padding: 24px;
+
+    box-shadow: var(--shadow);
+
+  }
+
+
+
+  .card {
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  }
+
+
+
+  .card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 12px 30px rgba(95, 75, 120, 0.12);
+
+  }
+
+
+
+  .card p {
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    margin: 0 0 12px;
+
+  }
+
+
+
+  .amount {
+
+    color: var(--primary-dark);
+
+    font-size: clamp(21px, 3vw, 29px);
+
+    font-weight: 750;
+
+    overflow-wrap: anywhere;
+
+  }
+
+
+
+  .cards .card:nth-child(1) {
+
+    background: linear-gradient(145deg, #ffffff, #f3edff);
+
+  }
+
+
+
+  .cards .card:nth-child(2) {
+
+    background: linear-gradient(145deg, #ffffff, #eaf7ef);
+
+  }
+
+
+
+  .cards .card:nth-child(3) {
+
+    background: linear-gradient(145deg, #ffffff, #fff0f4);
+
+  }
+
+
+
+  .cards .card:nth-child(2) .amount {
+
+    color: var(--mint-dark);
+
+  }
+
+
+
+  .cards .card:nth-child(3) .amount {
+
+    color: #b36d89;
+
+  }
+
+
+
+  .panel {
+
+    margin-bottom: 22px;
+
+    min-width: 0;
+
+  }
+
+
+
+  .progress-bg {
+
+    height: 14px;
+
+    background: #eee9f5;
+
+    border-radius: 100px;
+
+    overflow: hidden;
+
+  }
+
+
+
+  .progress {
+
+    height: 100%;
+
+    width: 0;
+
+    background: linear-gradient(90deg, #b4a4ed, #81cbb0);
+
+    border-radius: inherit;
+
+    transition: width 0.4s ease;
+
+  }
+
+
+
+  .progress-text {
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    margin-bottom: 0;
+
+  }
+
+
+
+  label {
+
+    display: block;
+
+    margin: 16px 0 7px;
+
+    font-size: 14px;
+
+    font-weight: 650;
+
+    color: #5c536e;
+
+  }
+
+
+
+  input,
+
+  select {
+
+    display: block;
+
+    width: 100%;
+
+    min-height: 46px;
+
+    padding: 11px 13px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: #fffdfd;
+
+    color: var(--text);
+
+    font: inherit;
+
+    outline: none;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+  }
+
+
+
+  input:focus,
+
+  select:focus {
+
+    border-color: #a99add;
+
+    box-shadow: 0 0 0 3px rgba(169, 154, 221, 0.18);
+
+  }
+
+
+
+  button {
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 16px;
+
+    padding: 12px 19px;
+
+    min-height: 44px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font: inherit;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition: *background* 0.2s, transform 0.2s;
+
+  }
+
+
+
+  button:hover {
+
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+
+  }
+
+
+
+  button:focus-visible {
+
+    outline: 3px solid #c9bdf2;
+
+    outline-offset: 3px;
+
+  }
+
+
+
+  .delete-btn {
+
+    background: #e9a0b6;
+
+    padding: 7px 12px;
+
+    min-height: 34px;
+
+    margin: 0;
+
+  }
+
+
+
+  .delete-btn:hover {
+
+    background: #d67d9a;
+
+  }
+
+
+
+  .table-wrap {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+  }
+
+
+
+  table {
+
+    width: 100%;
+
+    min-width: 600px;
+
+    border-collapse: collapse;
+
+  }
+
+
+
+  th,
+
+  td {
+
+    padding: 13px 12px;
+
+    text-align: left;
+
+    border-bottom: 1px solid #f0ebf3;
+
+  }
+
+
+
+  th {
+
+    background: #f5f0fc;
+
+    color: #625775;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+  }
+
+
+
+  td {
+
+    font-size: 14px;
+
+  }
+
+
+
+  tbody tr:hover {
+
+    background: #fdfaff;
+
+  }
+
+
+
+  tbody tr:last-child td {
+
+    border-bottom: none;
+
+  }
+
+
+
+  .deposit-text {
+
+    color: #43866c;
+
+    font-weight: 700;
+
+  }
+
+
+
+  .withdraw-text {
+
+    color: #c66c85;
+
+    font-weight: 700;
+
+  }
+
+
+
+  #emptyMessage {
+
+    color: var(--muted);
+
+    text-align: center;
+
+    padding: 12px;
+
+  }
+
+
+
+  #chartSummary {
+
+    color: var(--primary-dark);
+
+    font-weight: 700;
+
+  }
+
+
+
+  #chartPeriod {
+
+    max-width: 340px;
+
+  }
+
+
+
+  @media (max-width: 700px) {
+
+    body {
+
+      padding: 18px 12px;
+
+    }
+
+
+
+    .cards {
+
+      grid-template-columns: 1fr;
+
+      gap: 12px;
+
+    }
+
+
+
+    .card,
+
+    .panel {
+
+      padding: 19px;
+
+      border-radius: 18px;
+
+    }
+
+
+
+    header {
+
+      margin-bottom: 20px;
+
+    }
+
+
+
+    h2 {
+
+      font-size: 18px;
+
+    }
+
+
+
+    .amount {
+
+      font-size: 25px;
+
+    }
+
+  }
+
+
+
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+
+    *::before,
+
+    *::after {
+
+      transition: none !important;
+
+    }
+
+  }
+
+</style>
+
+
+
+</head>
+
+
+
+<body>
+
+  <div class="container">
+
+
+
+    <header>
+
+      <h1>💰 My Savings</h1>
+
+      <p class="subtitle">
+
+        ค่อย ๆ ออมวันนี้ เพื่อเป้าหมายของเราในวันหน้า
+
+      </p>
+
+    </header>
+
+
+
+    <section class="cards">
+
+      <div class="card">
+
+        <p>เงินออมปัจจุบัน</p>
+
+        <div class="amount" id="balance">฿1,490.00</div>
+
+      </div>
+
+
+
+      <div class="card">
+
+        <p id="goalNameDisplay">ซื้อโทรศัพท์มือถือ</p>
+
+        <div class="amount" id="goal">฿24,500.00</div>
+
+      </div>
+
+
+
+      <div class="card">
+
+        <p>เงินที่ต้องออมเพิ่ม</p>
+
+        <div class="amount" id="remaining">฿23,010.00</div>
+
+      </div>
+
+    </section>
+
+    <section class="panel">
+      <h2>🎯 ตั้งเป้าหมายเงินออม</h2>
+      <form id="goalForm">
+        <label for="goalNameInput">ชื่อเป้าหมาย</label>
+        <input type="text" id="goalNameInput" maxlength="100"
+               placeholder="เช่น ซื้อโทรศัพท์มือถือ" required>
+
+        <label for="goalAmountInput">จำนวนเงินเป้าหมาย (บาท)</label>
+        <input type="number" id="goalAmountInput" min="0.01" step="0.01"
+               placeholder="เช่น 24500" required>
+
+        <button type="submit">💾 บันทึกเป้าหมาย</button>
+      </form>
+      <p class="progress-text">เปลี่ยนเป้าหมายได้ทุกเมื่อ ประวัติเงินออมเดิมจะยังคงอยู่</p>
+    </section>
+
+    <section class="panel">
+      <h2>📈 ความคืบหน้าการออม</h2>
+
+      <div class="progress-bg">
+
+        <div class="progress" id="progress"></div>
+
+      </div>
+
+      <p class="progress-text" id="progressText"></p>
+
+    </section>
+
+
+
+
+
+<section class="panel">
+
+  <h2>📊 สรุปเงินออมรายสัปดาห์และรายเดือน</h2>
+
+
+
+  <label for="chartPeriod">เลือกรูปแบบกราฟ</label>
+
+  <select id="chartPeriod">
+
+    <option value="week">รายสัปดาห์ (8 สัปดาห์ล่าสุด)</option>
+
+    <option value="month">รายเดือน (6 เดือนล่าสุด)</option>
+
+  </select>
+
+
+
+  <p id="chartSummary">กำลังคำนวณข้อมูล...</p>
+
+
+
+  <div id="savingsChart"
+
+       style="display:flex; flex-direction:column; gap:16px; margin-top:20px;">
+
+  </div>
+
+
+
+  <p style="font-size:13px; color:#758198;">
+
+    * คำนวณจากยอดฝากลบยอดถอนของแต่ละช่วง
+
+    ไม่รวมยอดเงินเริ่มต้น 1,490 บาท
+
+  </p>
+
+</section>
+
+
+
+
+
+    <section class="panel">
+
+      <h2>📝 บันทึกเงินออม</h2>
+
+
+
+      <form id="savingForm">
+
+        <label for="date">วันที่</label>
+
+        <input type="date" id="date" min="2026-07-25" required>
+
+
+
+        <label for="type">ประเภทรายการ</label>
+
+        <select id="type" required>
+
+          <option value="deposit">ฝากเงินออม</option>
+
+          <option value="withdraw">ถอนเงิน</option>
+
+        </select>
+
+
+
+        <label for="amount">จำนวนเงิน (บาท)</label>
+
+        <input type="number" id="amount" min="0.01" step="0.01"
+
+          placeholder="เช่น 100" required>
+
+
+
+        <label for="note">รายละเอียด</label>
+
+        <input type="text" id="note"
+
+          placeholder="เช่น ออมเงินจากค่าขนม">
+
+
+
+        <button type="submit">+ บันทึกรายการ</button>
+
+      </form>
+
+    </section>
+
+
+
+    <section class="panel">
+
+      <h2>📋 ประวัติเงินออม</h2>
+
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>วันที่</th>
+
+              <th>ประเภท</th>
+
+              <th>รายละเอียด</th>
+
+              <th>จำนวนเงิน</th>
+
+              <th>จัดการ</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="history"></tbody>
+
+        </table>
+
+      </div>
+
+
+
+      <p id="emptyMessage">ยังไม่มีรายการเงินออม</p>
+
+      <button type="button" id="exportBtn">ส่งออก CSV</button>
+
+    </section>
+
+
+
+  </div>
+
+
+
+  <script>
+
+    const DEFAULT_GOAL = 24500;
+    const INITIAL_BALANCE = 1490;
+    const STORAGE_KEY = "mySavingsRecords";
+    const GOAL_STORAGE_KEY = "mySavingsGoalSettings";
+
+    let goalName = "ซื้อโทรศัพท์มือถือ";
+    let goalAmount = DEFAULT_GOAL;
+
+    // โหลดชื่อและจำนวนเงินเป้าหมายที่บันทึกไว้ โดยไม่แตะประวัติการออมเดิม
+    try {
+      const savedGoal = localStorage.getItem(GOAL_STORAGE_KEY);
+      if (savedGoal) {
+        const parsedGoal = JSON.parse(savedGoal);
+        if (parsedGoal &&
+            typeof parsedGoal.name === "string" && parsedGoal.name.trim() &&
+            Number.isFinite(parsedGoal.amount) && parsedGoal.amount > 0) {
+          goalName = parsedGoal.name;
+          goalAmount = parsedGoal.amount;
+        }
+      }
+    } catch (error) {
+      console.warn("ไม่สามารถโหลดเป้าหมายที่บันทึกไว้ได้", error);
+    }
+
+
+
+    const $ = (id) => document.getElementById(id);
+
+
+
+    let records = [];
+
+
+
+    // โหลดข้อมูลเดิม
+
+    try {
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+
+      if (saved) {
+
+        const parsed = JSON.parse(saved);
+
+        if (Array.isArray(parsed)) {
+
+          records = parsed.filter(item =>
+
+            item &&
+
+            typeof item.id === "string" &&
+
+            typeof item.date === "string" &&
+
+            ["deposit", "withdraw"].includes(item.type) &&
+
+            Number.isFinite(item.amount) &&
+
+            item.amount > 0 &&
+
+            typeof item.note === "string"
+
+          );
+
+        }
+
+      }
+
+    } catch (error) {
+
+      alert("อ่านข้อมูลเดิมไม่ได้ กรุณาตรวจสอบข้อมูลสำรอง");
+
+    }
+
+
+
+    function saveData() {
+
+      try {
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+
+        return true;
+
+      } catch (error) {
+
+        alert("บันทึกข้อมูลไม่สำเร็จ กรุณาส่งออกข้อมูลสำรอง");
+
+        return false;
+
+      }
+
+    }
+
+
+
+    function getBalance() {
+
+      return records.reduce((total, item) => {
+
+        return total + (
+
+          item.type === "deposit" ? item.amount : -item.amount
+
+        );
+
+      }, INITIAL_BALANCE);
+
+    }
+
+
+
+    function money(value) {
+
+      return "฿" + value.toLocaleString("th-TH", {
+
+        minimumFractionDigits: 2,
+
+        maximumFractionDigits: 2
+
+      });
+
+    }
+
+
+
+    function render() {
+
+      const balance = getBalance();
+
+      const remaining = Math.max(0, goalAmount - balance);
+
+      const percent = Math.min(100, Math.max(0, balance / goalAmount * 100));
+
+
+
+      $("balance").textContent = money(balance);
+
+      $("goal").textContent = money(goalAmount);
+      $("goalNameDisplay").textContent = goalName;
+
+      $("remaining").textContent = money(remaining);
+
+      $("progress").style.width = percent + "%";
+
+      $("progressText").textContent =
+
+        "ออมได้แล้ว " + percent.toFixed(1) + "% ของเป้าหมาย";
+
+
+
+      const history = $("history");
+
+      history.replaceChildren();
+
+      $("emptyMessage").hidden = records.length > 0;
+
+
+
+      [...records].reverse().forEach(item => {
+
+        const tr = document.createElement("tr");
+
+
+
+        const values = [
+
+          item.date,
+
+          item.type === "deposit" ? "ฝากเงิน" : "ถอนเงิน",
+
+          item.note || "-",
+
+          (item.type === "deposit" ? "+" : "-") + money(item.amount)
+
+        ];
+
+
+
+        values.forEach((value, index) => {
+
+          const td = document.createElement("td");
+
+          td.textContent = value;
+
+
+
+          if (index === 3) {
+
+            td.className = item.type === "deposit"
+
+              ? "deposit-text" : "withdraw-text";
+
+          }
+
+
+
+          tr.appendChild(td);
+
+        });
+
+
+
+        const action = document.createElement("td");
+
+        const deleteBtn = document.createElement("button");
+
+        deleteBtn.type = "button";
+
+        deleteBtn.textContent = "ลบ";
+
+        deleteBtn.className = "delete-btn";
+
+        deleteBtn.addEventListener("click", () => {
+
+          if (!confirm("ต้องการลบรายการนี้ใช่หรือไม่?")) return;
+
+
+
+          const previous = records;
+
+          records = records.filter(record => record.id !== item.id);
+
+
+
+          if (!saveData()) {
+
+            records = previous;
+
+            return;
+
+          }
+
+
+
+          render();
+
+        });
+
+
+
+        action.appendChild(deleteBtn);
+
+        tr.appendChild(action);
+
+        history.appendChild(tr);
+
+      });
+
+    }
+
+
+
+    function todayString() {
+
+      const now = new Date();
+
+      const local = new Date(
+
+        now.getTime() - now.getTimezoneOffset() * 60000
+
+      );
+
+      return local.toISOString().slice(0, 10);
+
+    }
+
+
+
+    $("date").value = todayString();
+
+
+
+    $("savingForm").addEventListener("submit", event => {
+
+      event.preventDefault();
+
+
+
+      const date = $("date").value;
+
+      const type = $("type").value;
+
+      const amount = Number($("amount").value);
+
+      const note = $("note").value.trim();
+
+
+
+      if (!date || date < "2026-07-25") {
+
+        alert("กรุณาเลือกวันที่ตั้งแต่ 25 กรกฎาคม 2026 เป็นต้นไป");
+
+        return;
+
+      }
+
+
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+
+        alert("กรุณากรอกจำนวนเงินมากกว่า 0");
+
+        return;
+
+      }
+
+
+
+      if (type === "withdraw" && amount > getBalance()) {
+
+        alert("ยอดเงินออมไม่เพียงพอสำหรับการถอน");
+
+        return;
+
+      }
+
+
+
+      const item = {
+
+        id: Date.now().toString() + Math.random().toString(16).slice(2),
+
+        date,
+
+        type,
+
+        amount: Math.round(amount * 100) / 100,
+
+        note
+
+      };
+
+
+
+      records.push(item);
+
+
+
+      if (!saveData()) {
+
+        records.pop();
+
+        return;
+
+      }
+
+
+
+      render();
+
+      $("savingForm").reset();
+
+      $("date").value = todayString();
+
+      alert("บันทึกรายการเรียบร้อยแล้ว");
+
+    });
+
+
+
+    $("exportBtn").addEventListener("click", () => {
+
+      const rows = [
+
+        ["วันที่", "ประเภท", "รายละเอียด", "จำนวนเงิน"],
+
+        ...records.map(item => [
+
+          item.date,
+
+          item.type === "deposit" ? "ฝากเงิน" : "ถอนเงิน",
+
+          item.note,
+
+          item.amount
+
+        ])
+
+      ];
+
+
+
+      const csv = "\uFEFF" + rows.map(row =>
+
+        row.map(value =>
+
+          '"' + String(value).replace(/"/g, '""') + '"'
+
+        ).join(",")
+
+      ).join("\r\n");
+
+
+
+      const blob = new Blob([csv], {
+
+        type: "text/csv;charset=utf-8;"
+
+      });
+
+
+
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+
+      link.href = url;
+
+      link.download = "my-savings.csv";
+
+      link.click();
+
+      URL.revokeObjectURL(url);
+
+    });
+
+
+
+
+
+    // สร้างข้อมูลสรุปกราฟ
+
+    function renderChart() {
+
+      const period = $("chartPeriod").value;
+
+      const now = new Date();
+
+      const today = new Date(
+
+        now.getFullYear(),
+
+        now.getMonth(),
+
+        now.getDate()
+
+      );
+
+
+
+      const groups = [];
+
+
+
+      if (period === "week") {
+
+        // 8 สัปดาห์ล่าสุด โดยเริ่มสัปดาห์วันจันทร์
+
+        const day = (today.getDay() + 6) % 7;
+
+        const monday = new Date(today);
+
+        monday.setDate(today.getDate() - day);
+
+
+
+        for (let i = 7; i >= 0; i--) {
+
+          const start = new Date(monday);
+
+          start.setDate(monday.getDate() - i * 7);
+
+
+
+          const end = new Date(start);
+
+          end.setDate(start.getDate() + 7);
+
+
+
+          groups.push({
+
+            label: start.toLocaleDateString("th-TH", {
+
+              day: "numeric",
+
+              month: "short"
+
+            }),
+
+            start,
+
+            end,
+
+            total: 0
+
+          });
+
+        }
+
+      } else {
+
+        // 6 เดือนล่าสุด
+
+        for (let i = 5; i >= 0; i--) {
+
+          const start = new Date(
+
+            today.getFullYear(),
+
+            today.getMonth() - i,
+
+            1
+
+          );
+
+
+
+          const end = new Date(
+
+            start.getFullYear(),
+
+            start.getMonth() + 1,
+
+            1
+
+          );
+
+
+
+          groups.push({
+
+            label: start.toLocaleDateString("th-TH", {
+
+              month: "short",
+
+              year: "2-digit"
+
+            }),
+
+            start,
+
+            end,
+
+            total: 0
+
+          });
+
+        }
+
+      }
+
+
+
+      // รวมยอดฝากและหักยอดถอนตามช่วงเวลา
+
+      records.forEach(item => {
+
+        const date = new Date(item.date + "T12:00:00");
+
+
+
+        const group = groups.find(g =>
+
+          date >= g.start && date < g.end
+
+        );
+
+
+
+        if (group) {
+
+          group.total += item.type === "deposit"
+
+            ? item.amount
+
+            : -item.amount;
+
+        }
+
+      });
+
+
+
+      const chart = $("savingsChart");
+
+      chart.replaceChildren();
+
+
+
+      const maxValue = Math.max(
+
+        1,
+
+        ...groups.map(g => Math.abs(g.total))
+
+      );
+
+
+
+      groups.forEach(group => {
+
+        const row = document.createElement("div");
+
+        row.style.display = "grid";
+
+        row.style.gridTemplateColumns = "90px 1fr";
+
+        row.style.gap = "10px";
+
+        row.style.alignItems = "center";
+
+
+
+        const label = document.createElement("div");
+
+        label.textContent = group.label;
+
+        label.style.fontSize = "13px";
+
+
+
+        const area = document.createElement("div");
+
+
+
+        const value = document.createElement("div");
+
+        value.textContent =
+
+          (group.total > 0 ? "+" : "") +
+
+          group.total.toLocaleString("th-TH", {
+
+            maximumFractionDigits: 2
+
+          }) + " บาท";
+
+
+
+        value.style.fontWeight = "bold";
+
+        value.style.fontSize = "13px";
+
+        value.style.marginBottom = "5px";
+
+        value.style.color = group.total < 0
+
+          ? "#d14e4e" : "#16865e";
+
+
+
+        const track = document.createElement("div");
+
+        track.style.height = "12px";
+
+        track.style.background = "#e8edf5";
+
+        track.style.borderRadius = "20px";
+
+        track.style.overflow = "hidden";
+
+
+
+        const bar = document.createElement("div");
+
+        bar.style.height = "100%";
+
+        bar.style.width =
+
+          (Math.abs(group.total) / maxValue * 100) + "%";
+
+        bar.style.background = group.total < 0
+
+          ? "#d14e4e" : "#41b883";
+
+        bar.style.borderRadius = "20px";
+
+
+
+        track.appendChild(bar);
+
+        area.append(value, track);
+
+        row.append(label, area);
+
+        chart.appendChild(row);
+
+      });
+
+
+
+      const total = groups.reduce(
+
+        (sum, group) => sum + group.total, 0
+
+      );
+
+
+
+      $("chartSummary").textContent =
+
+        "ยอดสุทธิในช่วงที่แสดง: " +
+
+        total.toLocaleString("th-TH", {
+
+          minimumFractionDigits: 2,
+
+          maximumFractionDigits: 2
+
+        }) + " บาท";
+
+    }
+
+
+
+    // ตั้งค่าในช่องกรอกให้ตรงกับเป้าหมายที่บันทึกไว้
+    $("goalNameInput").value = goalName;
+    $("goalAmountInput").value = goalAmount;
+
+    $("goalForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const newName = $("goalNameInput").value.trim();
+      const newAmount = Number($("goalAmountInput").value);
+
+      if (!newName) {
+        alert("กรุณากรอกชื่อเป้าหมาย");
+        return;
+      }
+      if (!Number.isFinite(newAmount) || newAmount <= 0) {
+        alert("กรุณากรอกจำนวนเงินเป้าหมายมากกว่า 0");
+        return;
+      }
+
+      const previousName = goalName;
+      const previousAmount = goalAmount;
+      goalName = newName;
+      goalAmount = Math.round(newAmount * 100) / 100;
+
+      try {
+        localStorage.setItem(GOAL_STORAGE_KEY, JSON.stringify({
+          name: goalName,
+          amount: goalAmount
+        }));
+      } catch (error) {
+        goalName = previousName;
+        goalAmount = previousAmount;
+        alert("บันทึกเป้าหมายไม่สำเร็จ กรุณาลองใหม่");
+        return;
+      }
+
+      render();
+      alert("บันทึกเป้าหมายเรียบร้อยแล้ว");
+    });
+
+    // เปลี่ยนกราฟเมื่อเลือกรายสัปดาห์หรือรายเดือน
+    $("chartPeriod").addEventListener("change", renderChart);
+    renderChart();
+
+
+
+    render();
+
+  </script>
+
+</body>
+
+</html>
